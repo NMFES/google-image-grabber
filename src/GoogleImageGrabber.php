@@ -2,13 +2,12 @@
 
 use PHPHtmlParser\Dom;
 use __;
+
 /**
  *
  */
-class GoogleImageGrabber
-{
-    public static function getValues($array)
-    {
+class GoogleImageGrabber {
+    public static function getValues($array) {
         $return = [];
         foreach ($array as $key => $value) {
             if (is_array($value)) {
@@ -23,8 +22,7 @@ class GoogleImageGrabber
         return $return;
     }
 
-    public static function array_flatten($array)
-    {
+    public static function array_flatten($array) {
         $return = [];
         foreach ($array as $key => $value) {
             if (is_array($value)) {
@@ -36,8 +34,7 @@ class GoogleImageGrabber
         return $return;
     }
 
-    public static function filterResult($array, &$result)
-    {
+    public static function filterResult($array, &$result) {
         $array = array_filter($array);
 
         foreach ($array as $key => $value) {
@@ -57,16 +54,12 @@ class GoogleImageGrabber
         }
     }
 
-    public static function grab($keyword, $proxy = "", $options = [])
-    {
-        $url =
-            "https://www.google.com/search?q=" .
-            urlencode($keyword) .
-            "&source=lnms&tbm=isch&tbs=";
+    public static function grab($keyword, $proxy = "", $options = []) {
+        $url = "https://www.google.com/search?q=" . urlencode($keyword) . "&source=lnms&tbm=isch&tbs=";
 
         $uas = [
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36 Edg/88.0.705.68",
-            "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko",
+//            "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36",
             "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36",
             "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36",
@@ -101,11 +94,10 @@ class GoogleImageGrabber
 
         $response = file_get_contents($url, false, $context);
 
-        $re =
-            '/AF_initDataCallback\({key: \'ds:1\', hash: \'\d\', data:(.*), sideChannel: {}}\);<\/script>/m';
-        preg_match_all($re, $response, $matches);
+        preg_match_all('/AF_initDataCallback\({key: \'ds:1\', hash: \'\d\', data:(.*), sideChannel: {}}\);<\/script>/m', $response, $matches);
 
         $data = isset($matches[1][0]) ? json_decode($matches[1][0], true) : [];
+
 
         $rawResults = [];
         $results = [];
@@ -153,30 +145,24 @@ class GoogleImageGrabber
         return $results;
     }
 
-    public static function getFileType($url)
-    {
+    public static function getFileType($url) {
         $url = strtolower($url);
 
         switch ($url) {
             case strpos($url, ".jpg") || strpos($url, ".jpeg"):
                 return "jpg";
-                break;
 
             case strpos($url, ".png"):
                 return "png";
-                break;
 
             case strpos($url, ".bmp"):
                 return "bmp";
-                break;
 
             case strpos($url, ".gif"):
                 return "gif";
-                break;
 
             default:
                 return "jpg";
-                break;
         }
     }
 }
