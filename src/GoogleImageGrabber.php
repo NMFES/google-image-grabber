@@ -1,4 +1,6 @@
-<?php namespace Buchin\GoogleImageGrabber;
+<?php
+
+namespace Buchin\GoogleImageGrabber;
 
 use PHPHtmlParser\Dom;
 use __;
