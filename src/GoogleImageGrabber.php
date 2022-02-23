@@ -94,7 +94,11 @@ class GoogleImageGrabber {
 
         $context = stream_context_create($options);
 
-        $response = file_get_contents($url, false, $context);
+        $response = @file_get_contents($url, false, $context);
+
+        if ($response === false) {
+            throw new \Exception(error_get_last()['message']);
+        }
 
         preg_match_all('/AF_initDataCallback\({key: \'ds:1\', hash: \'\d\', data:(.*), sideChannel: {}}\);<\/script>/m', $response, $matches);
 
