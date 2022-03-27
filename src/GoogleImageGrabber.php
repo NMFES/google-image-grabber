@@ -97,7 +97,8 @@ class GoogleImageGrabber {
         $response = @file_get_contents($url, false, $context);
 
         if ($response === false) {
-            throw new \Exception(error_get_last()['message']);
+            $error = error_get_last();
+            throw new \Exception($error ? $error['message'] : 'No content received');
         }
 
         preg_match_all('/AF_initDataCallback\({key: \'ds:1\', hash: \'\d\', data:(.*), sideChannel: {}}\);<\/script>/m', $response, $matches);
